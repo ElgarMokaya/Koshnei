@@ -1,19 +1,17 @@
-const express=require("express");
-const app=express()
-const mongoose=require("mongoose");
-dotenv.config()
+const express = require("express");
+const app = express();
+const helmet = require("helmet");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
+const activityRouter = require("./src/routes/activity.routes");
+const dotenv = require("dotenv");
+dotenv.config();
+require("./src/db")
+app.use(express.json());
+app.use(helmet());
+app.use(morgan("dev"));
+app.use("/api/activity", activityRouter);
 
-mongoose.connect(process.env.MONGO_URL,{
-useNewUrlParser :true,
-useUnifiedTopology:true,
-useCreateIndex:true,
-
-
-}).then (console.log ("mongo db connected sucesfully"))
-.catch(err=>console.log(err));
-
-
-
-app.listen("5000",()=>{
-    consolele.log("backend is connected successfuly")
-})
+app.listen("5000", () => {
+  console.log(`Server running successfuly`);
+});
